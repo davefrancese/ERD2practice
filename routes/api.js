@@ -4,8 +4,33 @@ const queries = require('../database/queries')
 const router = express.Router();
 
 router.get('/', (req,res)=>{
-  res.render('index')
+  queries.getMovies()
+  .then(dData => {
+    queries.getAllActorData()
+    .then(aData => {
+      let movieData = queries.joinData(dData, aData)
+      // res.send(movieData)
+
+      res.render('index', {
+        movieData: movieData
+      })
+    })
+  })
 })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 router.post('/addMovie', (req,res)=>{
   let newMovie = req.body
